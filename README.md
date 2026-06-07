@@ -1,3 +1,4 @@
+[![DOI](https://zenodo.org/badge/1262244286.svg)](https://doi.org/10.5281/zenodo.20584478)
 # Heads-Up Display (HUD) Cross-Module Navigation for Enterprise Resource Planning (ERP) Systems
 
 ## A Prior Art Specification and Proof-of-Concept (PoC) Documentation
