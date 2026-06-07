@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise ERP - Operations Command Center</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Sans and ERP typography collection -->
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Text:wght@400;500;700&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- 1. Sleek Split-Screen Login View -->
+    <div id="loginView" class="login-container">
+        <div class="login-split">
+            <!-- Left Brand panel -->
+            <div class="login-left" style="background-image: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.75) 100%); background-size: cover; background-position: center;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="8" height="8" rx="2" fill="var(--primary)" />
+                        <rect x="14" y="2" width="8" height="8" rx="2" fill="var(--secondary)" />
+                        <rect x="2" y="14" width="8" height="8" rx="2" fill="var(--secondary)" />
+                        <rect x="14" y="14" width="8" height="8" rx="2" fill="var(--primary)" />
+                    </svg>
+                    <h1 style="margin: 0; font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #ffffff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Enterprise ERP</h1>
+                </div>
+                <p>Enterprise SaaS resource planning, managing financial books, stock distribution, tax registries, and audit trails under a unified command console.</p>
+                
+                <div class="login-features">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-calculator"></i>
+                        <h3>Accounting & Vouchers</h3>
+                        <p>Generate daybooks, profit/loss records, double-entry vouchers, and balance sheets.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <h3>Inventory Ledger</h3>
+                        <p>Analyze stock summaries, check near-expiry batches, and manage price lists.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Login Form panel -->
+            <div class="login-right">
+                <div class="login-card">
+                    <div class="login-logo" style="margin-bottom: 24px;">
+                        <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="8" height="8" rx="2" fill="var(--primary)" />
+                                <rect x="14" y="2" width="8" height="8" rx="2" fill="var(--secondary)" />
+                                <rect x="2" y="14" width="8" height="8" rx="2" fill="var(--secondary)" />
+                                <rect x="14" y="14" width="8" height="8" rx="2" fill="var(--primary)" />
+                            </svg>
+                            <span style="font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Enterprise<span style="color:var(--primary)">ERP</span></span>
+                        </div>
+                    </div>
+                    <h3>Sign In</h3>
+                    <p class="subtitle">Welcome back! Please login to your database.</p>
+                    
+                    <form id="loginForm" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-envelope"></i>
+                                <input type="text" id="username" class="form-control" placeholder="admin" required value="admin">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-lock"></i>
+                                <input type="password" id="password" class="form-control" placeholder="••••••••" required value="123@Login">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="dbname">Company Database</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-database"></i>
+                                <select id="dbname" class="form-control" required>
+                                    <option value="Enterprise_DB_Prod" selected>Enterprise_DB_Prod (Current)</option>
+                                    <option value="Enterprise_DB_Archive">Enterprise_DB_Archive (Fiscal 2025)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-wrapper">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="rememberMe" checked>
+                                Remember Me
+                            </label>
+                            <a href="#" style="font-size: 0.85rem">Forgot Password?</a>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Main Workspace Layout -->
+    <div id="mainApp" class="app-container" style="display: none;">
+        
+        <!-- Left Sidebar Navigator -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="8" height="8" rx="2" fill="var(--primary)" />
+                        <rect x="14" y="2" width="8" height="8" rx="2" fill="var(--secondary)" />
+                        <rect x="2" y="14" width="8" height="8" rx="2" fill="var(--secondary)" />
+                        <rect x="14" y="14" width="8" height="8" rx="2" fill="var(--primary)" />
+                    </svg>
+                    <h2>Enterprise<span>ERP</span></h2>
+                </div>
+            </div>
+            
+            <div class="sidebar-menu">
+                <!-- Quick Access Modules -->
+                <div class="section-label">Quick Access</div>
+                
+                <div class="nav-link active" onclick="switchView('dashboard')" id="link-dashboard">
+                    <div class="link-left">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </div>
+                </div>
+                
+                <div class="nav-link" onclick="switchView('sales-invoice')" id="link-sales-invoice">
+                    <div class="link-left">
+                        <i class="fa-solid fa-file-invoice"></i>
+                        <span>Sales Invoice</span>
+                    </div>
+                </div>
+
+                <div class="nav-link" onclick="switchView('daybook')" id="link-daybook">
+                    <div class="link-left">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Day Book</span>
+                    </div>
+                </div>
+
+                <!-- Workflow module menu -->
+                <div class="section-label">Workflows</div>
+                
+                <div class="nav-link" onclick="switchView('workflow-config')" id="link-workflow-config">
+                    <div class="link-left">
+                        <i class="fa-solid fa-gears" style="color:var(--primary)"></i>
+                        <span>Workflow Config</span>
+                    </div>
+                </div>
+
+                <div class="nav-link" onclick="switchView('workflows-list')" id="link-workflows-list">
+                    <div class="link-left">
+                        <i class="fa-solid fa-route" style="color:var(--primary)"></i>
+                        <span>Run Workflows</span>
+                    </div>
+                </div>
+
+                <div class="section-label">Navigation Centers</div>
+                
+                <!-- Accounts Accordion -->
+                <div class="nav-link" onclick="toggleSubmenu('submenu-accounts')" id="link-accounts-root">
+                    <div class="link-left">
+                        <i class="fa-solid fa-wallet"></i>
+                        <span>Accounts & Financials</span>
+                    </div>
+                    <i class="fa-solid fa-angle-left toggle-icon"></i>
+                </div>
+                <div id="submenu-accounts" class="menu-submenu">
+                    <div class="submenu-item" onclick="switchView('ledger-master')"><i class="fa-solid fa-circle-dot"></i> Ledger Master</div>
+                    <div class="submenu-item" onclick="switchView('daybook')"><i class="fa-solid fa-circle-dot"></i> Day Book</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Trial Balance')"><i class="fa-solid fa-circle-dot"></i> Trial Balance</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Profit & Loss')"><i class="fa-solid fa-circle-dot"></i> Profit & Loss</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Balance Sheet')"><i class="fa-solid fa-circle-dot"></i> Balance Sheet</div>
+                </div>
+
+                <!-- Sales & Receivables Accordion -->
+                <div class="nav-link" onclick="toggleSubmenu('submenu-sales')" id="link-sales-root">
+                    <div class="link-left">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Sales & Receivables</span>
+                    </div>
+                    <i class="fa-solid fa-angle-left toggle-icon"></i>
+                </div>
+                <div id="submenu-sales" class="menu-submenu">
+                    <div class="submenu-item" onclick="switchView('sales-invoice')"><i class="fa-solid fa-circle-dot"></i> Sales Invoice Entry</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Sales Summary')"><i class="fa-solid fa-circle-dot"></i> Sales Summary</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Pending Sales Order')"><i class="fa-solid fa-circle-dot"></i> Pending Sales Order</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Customer Master')"><i class="fa-solid fa-circle-dot"></i> Customer Master</div>
+                </div>
+
+                <!-- Inventory Accordion -->
+                <div class="nav-link" onclick="toggleSubmenu('submenu-inventory')" id="link-inventory-root">
+                    <div class="link-left">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span>Inventory Ledger</span>
+                    </div>
+                    <i class="fa-solid fa-angle-left toggle-icon"></i>
+                </div>
+                <div id="submenu-inventory" class="menu-submenu">
+                    <div class="submenu-item" onclick="triggerNavAction('Product Master')"><i class="fa-solid fa-circle-dot"></i> Product Master</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Stock Summary')"><i class="fa-solid fa-circle-dot"></i> Stock Summary</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Expiry Check')"><i class="fa-solid fa-circle-dot"></i> Near Expiry Check</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Price List')"><i class="fa-solid fa-circle-dot"></i> Price List</div>
+                </div>
+
+                <!-- Special Industry Modules -->
+                <div class="section-label">Industry Modules</div>
+                
+                <!-- Petrol Pump Accordion -->
+                <div class="nav-link" onclick="toggleSubmenu('submenu-petrol')" id="link-petrol-root">
+                    <div class="link-left">
+                        <i class="fa-solid fa-gas-pump"></i>
+                        <span>Fuel Station</span>
+                    </div>
+                    <i class="fa-solid fa-angle-left toggle-icon"></i>
+                </div>
+                <div id="submenu-petrol" class="menu-submenu">
+                    <div class="submenu-item" onclick="triggerNavAction('FuelStation Order')"><i class="fa-solid fa-circle-dot"></i> Station Orders</div>
+                    <div class="submenu-item" onclick="triggerNavAction('FuelStation Invoice')"><i class="fa-solid fa-circle-dot"></i> Pump Billing</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Meter Reading')"><i class="fa-solid fa-circle-dot"></i> Meter Readings</div>
+                </div>
+
+                <!-- System Config Accordion -->
+                <div class="nav-link" onclick="toggleSubmenu('submenu-setup')" id="link-setup-root">
+                    <div class="link-left">
+                        <i class="fa-solid fa-gears"></i>
+                        <span>Setup & Config</span>
+                    </div>
+                    <i class="fa-solid fa-angle-left toggle-icon"></i>
+                </div>
+                <div id="submenu-setup" class="menu-submenu">
+                    <div class="submenu-item" onclick="triggerNavAction('General Config')"><i class="fa-solid fa-circle-dot"></i> General Settings</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Fiscal Year')"><i class="fa-solid fa-circle-dot"></i> Fiscal Year Setup</div>
+                    <div class="submenu-item" onclick="triggerNavAction('Import Data')"><i class="fa-solid fa-circle-dot"></i> Import (Excel)</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right content workspace -->
+        <main class="main-workspace">
+            
+            <!-- Omnipresent Top bar -->
+            <header class="topbar">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <button class="icon-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars-staggered"></i></button>
+                    
+                    <!-- Global Command Search (Ctrl+K) -->
+                    <div class="command-search-container">
+                        <div class="command-input-wrapper">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input type="text" class="command-input" placeholder="Search any screen or action (Ctrl+K)..." id="commandInput" oninput="handleCommandSearch()" onfocus="showResults()" onblur="hideResults()">
+                            <i class="shortcut-label">Ctrl+K</i>
+                        </div>
+                        
+                        <!-- Search result dropdown -->
+                        <div class="search-results-panel" id="searchResults">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <!-- Branch Selector -->
+                    <select class="branch-selector" onchange="changeBranch(this.value)">
+                        <option value="main">Primary Headquarters (HQ-01)</option>
+                        <option value="br2">Secondary Branch (BR-02)</option>
+                    </select>
+
+                    <!-- Mega Menu Button (Pie Chart) -->
+                    <button class="icon-btn" title="Open Mega Menu" onclick="toggleMegaMenu()"><i class="fa-solid fa-chart-pie" style="color: var(--color-brand)"></i></button>
+                    
+                    <!-- Clear Cache -->
+                    <button class="icon-btn" title="Clear Cache" onclick="clearSystemCache()"><i class="fa-solid fa-eraser" style="color: var(--color-brand)"></i></button>
+                    
+                    <!-- Support helpdesk drop down -->
+                    <div class="nav-dropdown-wrapper">
+                        <button class="icon-btn" title="Support Helpdesk" onclick="toggleSupportPanel()"><i class="fa-solid fa-headset" style="color: var(--color-brand)"></i></button>
+                        
+                        <div id="supportPanel" class="support-panel">
+                            <div class="support-header">
+                                <h4>ERP Support Helpdesk</h4>
+                                <button class="icon-btn" style="color: white; width:24px; height:24px" onclick="toggleSupportPanel()"><i class="fa-solid fa-times"></i></button>
+                            </div>
+                            <div class="support-executive-item">
+                                <div class="support-label">Primary Support Executive</div>
+                                <div class="support-card">
+                                    <div class="support-avatar">SD</div>
+                                    <div class="support-info">
+                                        <h5>Support Desk</h5>
+                                        <p><i class="fa-solid fa-envelope"></i> support@enterprise-erp.com</p>
+                                        <p><i class="fa-solid fa-phone"></i> +1-800-555-0100</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="support-executive-item">
+                                <div class="support-label">Secondary Support Executive</div>
+                                <div class="support-card">
+                                    <div class="support-avatar">HD</div>
+                                    <div class="support-info">
+                                        <h5>Help Desk</h5>
+                                        <p><i class="fa-solid fa-envelope"></i> help@enterprise-erp.com</p>
+                                        <p><i class="fa-solid fa-phone"></i> +1-800-555-0101</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="support-executive-item">
+                                <div class="support-label">Relationship Officer</div>
+                                <div class="support-card">
+                                    <div class="support-avatar">RO</div>
+                                    <div class="support-info">
+                                        <h5>Relationship Desk</h5>
+                                        <p><i class="fa-solid fa-envelope"></i> relations@enterprise-erp.com</p>
+                                        <p><i class="fa-solid fa-phone"></i> +1-800-555-0102</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button class="icon-btn" title="Toggle Theme" onclick="toggleTheme()"><i class="fa-solid fa-circle-half-stroke"></i></button>
+
+                    <!-- User Metadata -->
+                    <div class="company-meta-block">
+                        <div class="company-meta-info">
+                            <h5>Enterprise Corp</h5>
+                            <p><i class="fa-solid fa-map-marker-alt" style="color: var(--color-success)"></i> Central HQ</p>
+                        </div>
+                        <div class="user-avatar">AD</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic views -->
+            <div class="main-content">
+                
+                <!-- 1. Dashboard View -->
+                <div id="view-dashboard" class="view-panel active">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Financial & Stock Control Dashboard</h2>
+                            <p class="text-muted">Real-time status overview for branch Primary HQ</p>
+                        </div>
+                    </div>
+
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <div class="kpi-details">
+                                <h4>Total Operating Revenue</h4>
+                                <div class="kpi-value">$8,421,950</div>
+                                <div class="kpi-trend text-success"><i class="fa-solid fa-caret-up"></i> +12.4% this month</div>
+                            </div>
+                            <div class="kpi-icon brand"><i class="fa-solid fa-coins"></i></div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-details">
+                                <h4>Cash in Hand / Bank</h4>
+                                <div class="kpi-value">$3,142,600</div>
+                                <div class="kpi-trend text-success"><i class="fa-solid fa-wallet"></i> Steady deposits</div>
+                            </div>
+                            <div class="kpi-icon success"><i class="fa-solid fa-wallet"></i></div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-details">
+                                <h4>Receivables (A/R)</h4>
+                                <div class="kpi-value">$1,450,200</div>
+                                <div class="kpi-trend text-danger"><i class="fa-solid fa-caret-down"></i> 14 pending dues</div>
+                            </div>
+                            <div class="kpi-icon danger"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-details">
+                                <h4>Payables (A/P)</h4>
+                                <div class="kpi-value">$921,450</div>
+                                <div class="kpi-trend text-success"><i class="fa-solid fa-circle-check"></i> Safe margins</div>
+                            </div>
+                            <div class="kpi-icon brand"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Revenue vs Expense Analysis</h3>
+                            </div>
+                            <div class="chart-container">
+                                <svg viewBox="0 0 500 200" width="100%" height="100%">
+                                    <defs>
+                                        <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.3"/>
+                                            <stop offset="100%" stop-color="var(--primary)" stop-opacity="0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <line x1="40" y1="30" x2="480" y2="30" stroke="var(--border-color)" stroke-dasharray="4"/>
+                                    <line x1="40" y1="100" x2="480" y2="100" stroke="var(--border-color)" stroke-dasharray="4"/>
+                                    <line x1="40" y1="170" x2="480" y2="170" stroke="var(--border-color)"/>
+                                    <path d="M 50 170 L 50 110 L 150 80 L 250 90 L 350 50 L 450 30 L 450 170 Z" fill="url(#revGrad)" />
+                                    <path d="M 50 110 L 150 80 L 250 90 L 350 50 L 450 30" fill="none" stroke="var(--primary)" stroke-width="3" />
+                                    <circle cx="450" cy="30" r="5" fill="var(--primary)" stroke="#fff" stroke-width="2" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Critical Inventory Levels</h3>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:16px; margin-top:10px;">
+                                <div style="display:flex; justify-content:space-between; padding:10px; border-radius:6px; background-color: var(--bg-base)">
+                                    <span>Premium Item Alpha (Pack of 10)</span>
+                                    <span class="badge danger">5 units left</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:10px; border-radius:6px; background-color: var(--bg-base)">
+                                    <span>Standard Item Beta (Pack of 5)</span>
+                                    <span class="badge warning">12 units left</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Sales Invoice View -->
+                <div id="view-sales-invoice" class="view-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Sales Invoice</h2>
+                            <p class="text-muted">Register item distribution, billing, and tax details.</p>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="invoice-meta-row">
+                            <div class="form-group">
+                                <label>Party Name / Customer</label>
+                                <select class="form-control" style="padding:10px 16px;">
+                                    <option>Global Retailers Corp</option>
+                                    <option>Metro Mall Distribution</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Invoice Number</label>
+                                <input type="text" class="form-control" style="padding:10px 16px;" value="INV-2026-082" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Transaction Date</label>
+                                <input type="date" class="form-control" style="padding:10px 16px;" value="2026-06-07">
+                            </div>
+                        </div>
+
+                        <div class="table-container" style="margin-top: 20px;">
+                            <table class="grid-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 5%">S.N.</th>
+                                        <th style="width: 40%">Product Master Item</th>
+                                        <th style="width: 12%">Quantity</th>
+                                        <th style="width: 15%">Rate ($)</th>
+                                        <th style="width: 10%">Discount (%)</th>
+                                        <th style="width: 15%">Total ($)</th>
+                                        <th style="width: 5%">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="invoiceItemRows">
+                                    <tr>
+                                        <td style="text-align: center;">1</td>
+                                        <td>
+                                            <select class="grid-input" onchange="updateRowCalculations(this)">
+                                                <option value="250" data-rate="250">Premium Item Alpha (Pack of 10)</option>
+                                                <option value="120" data-rate="120">Standard Item Beta (Pack of 5)</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" class="grid-input" value="10" min="1" oninput="updateRowCalculations(this)"></td>
+                                        <td><input type="number" class="grid-input" value="250" oninput="updateRowCalculations(this)"></td>
+                                        <td><input type="number" class="grid-input" value="5" min="0" max="100" oninput="updateRowCalculations(this)"></td>
+                                        <td><input type="number" class="grid-input row-total" value="2375" readonly></td>
+                                        <td><button class="btn-icon" onclick="deleteInvoiceRow(this)"><i class="fa-solid fa-trash"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-top:20px;">
+                            <button class="btn-primary" style="width:auto; padding:10px 20px;" onclick="addInvoiceRow()"><i class="fa-solid fa-plus mr-2"></i> Add Item Row</button>
+                            <div class="summary-block">
+                                <div class="summary-row"><span>Sub Total:</span> <span id="invoiceSubtotal">$2,375.00</span></div>
+                                <div class="summary-row"><span>Tax Amount (VAT 13%):</span> <span id="invoiceTax">$308.75</span></div>
+                                <div class="summary-row grand-total"><span>Grand Total:</span> <span id="invoiceGrandTotal">$2,683.75</span></div>
+                            </div>
+                        </div>
+
+                        <div class="action-row" style="margin-top:20px; display:flex; justify-content:flex-end; gap:12px;">
+                            <button class="btn-primary" style="width:auto; padding:12px 24px" onclick="submitInvoice()">Save & Print Voucher</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Day Book View -->
+                <div id="view-daybook" class="view-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Day Book Summary</h2>
+                            <p class="text-muted">Daily transaction listings for Enterprise Corp</p>
+                        </div>
+                    </div>
+                    <div class="detail-card" style="padding:0; overflow:hidden;">
+                        <table class="app-table">
+                            <thead>
+                                <tr>
+                                    <th>Voucher No</th>
+                                    <th>Account Name</th>
+                                    <th>Voucher Mode</th>
+                                    <th style="text-align: right;">Debit (Dr)</th>
+                                    <th style="text-align: right;">Credit (Cr)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>JV-2026-001</strong></td>
+                                    <td>Primary Operating Bank Account</td>
+                                    <td>Receipt Voucher</td>
+                                    <td style="text-align: right; color: var(--color-success)">$450,000.00</td>
+                                    <td style="text-align: right;">-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PV-2026-015</strong></td>
+                                    <td>Accounts Payable - Suppliers</td>
+                                    <td>Payment Voucher</td>
+                                    <td style="text-align: right;">-</td>
+                                    <td style="text-align: right; color: var(--color-danger)">$120,450.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 4. Ledger Creator View -->
+                <div id="view-ledger-master" class="view-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Ledger Account Creator</h2>
+                            <p class="text-muted">Define ledger masters for compliance registration</p>
+                        </div>
+                    </div>
+                    <div class="detail-card" style="max-width: 760px; margin: 0 auto;">
+                        <form id="ledgerForm" onsubmit="handleLedgerSubmit(event)">
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px;">
+                                <div class="form-group">
+                                    <label>Ledger Master Account Name</label>
+                                    <input type="text" id="ledgerName" class="form-control" style="padding-left:16px;" placeholder="e.g. Cash Ledger Office" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Account Group Classification</label>
+                                    <select id="ledgerGroup" class="form-control" style="padding-left:16px;">
+                                        <option value="assets">Current Assets</option>
+                                        <option value="liab">Current Liabilities</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="action-row" style="display:flex; justify-content:flex-end;">
+                                <button type="submit" class="btn-primary" style="width:auto; padding:12px 24px;">Create Ledger</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 5. Workflow Setup Configurator Panel -->
+                <div id="view-workflow-config" class="view-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Workflow Configuration</h2>
+                            <p class="text-muted">Design ordered pipelines or configure intelligent behavior-based HUD mapping.</p>
+                        </div>
+                    </div>
+                    
+                    <div style="max-width: 800px; margin: 0 auto 20px auto; display:flex; border-bottom:1px solid var(--border-color); gap:8px;">
+                        <button type="button" class="config-tab-btn wf-tab-btn active hud-step-button" onclick="window.showWorkflowConfigTab('manual')"><i class="fa-solid fa-route" style="margin-right:6px;"></i> Workflow Setup (Manual)</button>
+                        <button type="button" class="config-tab-btn wf-tab-btn hud-step-button" onclick="window.showWorkflowConfigTab('intelligent')"><i class="fa-solid fa-wand-magic-sparkles" style="margin-right:6px;"></i> Intelligent HUD Auto-Mapping</button>
+                    </div>
+
+                    <!-- Tab 1: Manual Configuration Form -->
+                    <div id="wf-panel-manual" class="wf-tab-panel">
+                        <div class="detail-card" style="max-width: 800px; margin:0 auto;">
+                            <form id="workflowConfigForm" onsubmit="saveWorkflow(event)">
+                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px;">
+                                    <div class="form-group">
+                                        <label for="workflowName">Workflow Name</label>
+                                        <input type="text" id="workflowName" class="form-control" style="padding-left:16px;" placeholder="e.g. End of Day Auditing" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="workflowRole">Assign to User Role (Optional)</label>
+                                        <select id="workflowRole" class="form-control" style="padding-left:16px; height:40px;">
+                                            <option value="">None (Available to All Roles)</option>
+                                            <option value="Accounting Clerk">Accounting Clerk</option>
+                                            <option value="Sales Agent">Sales Agent</option>
+                                            <option value="Inventory Controller">Inventory Controller</option>
+                                            <option value="System Administrator">System Administrator</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top:20px;">
+                                    <h4 style="font-weight:700; font-size:1rem; color:var(--text-primary); margin-bottom:12px;">Steps Configurator</h4>
+                                    <div id="configStepsContainer" style="display:flex; flex-direction:column; gap:16px; margin-bottom:20px;">
+                                        <!-- Dynamic Steps Added here -->
+                                    </div>
+                                    <button type="button" class="btn-secondary" onclick="addConfigStepBox()"><i class="fa-solid fa-plus" style="margin-right:6px;"></i> Add Workflow Step</button>
+                                </div>
+                                
+                                <div class="action-row" style="display:flex; justify-content:flex-end; margin-top:20px; border-top:1px solid var(--border-color); padding-top:20px;">
+                                    <button type="submit" class="btn-primary" style="width:auto; padding:12px 24px;">Save Workflow Configuration</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Created Workflows Table -->
+                        <div class="card" style="max-width: 800px; margin: 30px auto 0 auto; padding: 28px;">
+                            <h4 style="font-weight:700; font-size:1.1rem; color:var(--text-primary); margin-bottom:16px;">Active Workflow Pipelines</h4>
+                            <div class="table-container">
+                                <table class="app-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Workflow Name</th>
+                                            <th>Assigned Role</th>
+                                            <th>Steps Count</th>
+                                            <th style="text-align: right;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="createdWorkflowsTableBody">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Intelligent Role HUD Auto-Mapping -->
+                    <div id="wf-panel-intelligent" class="wf-tab-panel" style="display:none;">
+                        <div class="detail-card" style="max-width: 800px; margin: 0 auto;">
+                            <h3 style="font-weight:700; font-size:1.15rem; color:var(--text-primary); margin-bottom:8px;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--primary); margin-right:8px;"></i>Intelligent Role HUD Auto-Mapping</h3>
+                            <p class="text-muted" style="font-size:0.85rem; margin-bottom:20px;">Record user role navigation behaviors and dynamically suggest relevant menus on the workflow HUD.</p>
+                            
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:20px;">
+                                <!-- Toggles and Selectors -->
+                                <div style="display:flex; flex-direction:column; gap:16px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <div>
+                                            <h5 style="font-weight:600; color:white; font-size:0.9rem;">Record Role Behavior</h5>
+                                            <p style="font-size:0.75rem; color:var(--text-body);">Track and log screen visits per user role.</p>
+                                        </div>
+                                        <label class="premium-switch">
+                                            <input type="checkbox" id="trackingToggle" checked onchange="toggleRoleTracking(this.checked)">
+                                            <span class="premium-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <div>
+                                            <h5 style="font-weight:600; color:white; font-size:0.9rem;">Auto-Map HUD Suggestions</h5>
+                                            <p style="font-size:0.75rem; color:var(--text-body);">Append behavior-based shortcuts to bottom HUD.</p>
+                                        </div>
+                                        <label class="premium-switch">
+                                            <input type="checkbox" id="suggestionsToggle" checked onchange="toggleAutoMapSuggestions(this.checked)">
+                                            <span class="premium-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group" style="margin-top:10px;">
+                                        <label style="font-size:0.8rem; font-weight:600;">Active User Role Session</label>
+                                        <select id="userRoleSelector" class="form-control" onchange="changeUserRole(this.value)" style="padding-left:16px; height:40px;">
+                                            <option value="Accounting Clerk" selected>Accounting Clerk</option>
+                                            <option value="Sales Agent">Sales Agent</option>
+                                            <option value="Inventory Controller">Inventory Controller</option>
+                                            <option value="System Administrator">System Administrator</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Behavior Log View -->
+                                <div>
+                                    <h5 style="font-weight:600; color:white; font-size:0.9rem; margin-bottom:10px;">Recorded Behavior Log</h5>
+                                    <div style="max-height:160px; overflow-y:auto; border:1px solid var(--border-color); border-radius:6px; background:var(--bg-base); padding:10px;">
+                                        <table class="grid-table" style="width:100%; font-size:0.8rem;">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align:left; padding:4px 8px;">Screen Name</th>
+                                                    <th style="text-align:right; padding:4px 8px;">Visits</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="roleBehaviorLogBody">
+                                                <!-- Dynamically populated -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Workflows List panel -->
+                <div id="view-workflows-list" class="view-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>Run Workflows</h2>
+                            <p class="text-muted">Select an active operational pipeline to execute.</p>
+                        </div>
+                    </div>
+                    <div class="launchpad-grid" id="workflowsLaunchGrid">
+                        <!-- Dynamic Workflows rendering -->
+                    </div>
+                </div>
+
+                <!-- 7. Dynamic View panel -->
+                <div id="view-dynamic-container" class="view-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2 id="dynamicTitle">Report</h2>
+                            <p class="text-muted" id="dynamicSubtitle">Module View Description</p>
+                        </div>
+                    </div>
+                    <div class="detail-card" id="dynamicContentBlock">
+                        <!-- Populated by app.js dynamic UI renderer -->
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- 3. Full-Width Mega Menu Dropdown Overlay -->
+    <div id="megaMenu" class="mega-menu-overlay" onclick="closeMegaMenuOutside(event)">
+        <div class="mega-menu-container">
+            <div class="mega-column">
+                <h4>Financial Reports</h4>
+                <ul class="mega-column-links">
+                    <li><a href="#" onclick="triggerNavAction('Daybook')"><i class="fa-solid fa-book"></i> Daybook</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Daybook Summary')"><i class="fa-solid fa-file-invoice"></i> Daybook Summary</a></li>
+                    <li><a href="#" onclick="triggerNavAction('General Ledger Voucher')"><i class="fa-solid fa-file-signature"></i> GL Voucher</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Trial Balance')"><i class="fa-solid fa-scale-balanced"></i> Trial Balance</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Profit & Loss')"><i class="fa-solid fa-chart-line"></i> Profit & Loss</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Balance Sheet')"><i class="fa-solid fa-briefcase"></i> Balance Sheet</a></li>
+                </ul>
+            </div>
+            <div class="mega-column">
+                <h4>Outstanding Reports</h4>
+                <ul class="mega-column-links">
+                    <li><a href="#" onclick="triggerNavAction('Receivables Summary')"><i class="fa-solid fa-file-invoice-dollar"></i> Receivables Summary</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Payables Summary')"><i class="fa-solid fa-file-invoice-dollar"></i> Payables Summary</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Receivables Dues')"><i class="fa-solid fa-receipt"></i> Bill Wise Dues</a></li>
+                </ul>
+            </div>
+            <div class="mega-column">
+                <h4>Sales Reports</h4>
+                <ul class="mega-column-links">
+                    <li><a href="#" onclick="triggerNavAction('Sales Summary')"><i class="fa-solid fa-chart-simple"></i> Sales Summary</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Sales Analysis')"><i class="fa-solid fa-chart-pie"></i> Sales Analysis</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Sales Vat Register')"><i class="fa-solid fa-registered"></i> Sales Vat Register</a></li>
+                </ul>
+            </div>
+            <div class="mega-column">
+                <h4>Purchase Reports</h4>
+                <ul class="mega-column-links">
+                    <li><a href="#" onclick="triggerNavAction('Purchase Summary')"><i class="fa-solid fa-chart-simple"></i> Purchase Summary</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Purchase Analysis')"><i class="fa-solid fa-chart-pie"></i> Purchase Analysis</a></li>
+                    <li><a href="#" onclick="triggerNavAction('Purchase Vat Register')"><i class="fa-solid fa-registered"></i> Purchase Vat Register</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Persistent Workflow HUD Banner -->
+    <div id="workflowHUD" class="workflow-hud-banner">
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div class="sphere-icon"><i class="fa-solid fa-route"></i></div>
+            <div>
+                <h5 id="hudWorkflowName" style="font-weight:700; color:white; font-size:0.9rem;">Active Workflow</h5>
+                <p id="hudStepLabel" style="font-size:0.8rem; color:var(--text-body); margin-top:2px;">Step 1 of 3</p>
+            </div>
+        </div>
+        
+        <!-- Suggested next actions -->
+        <div id="hudActionsContainer" style="display:flex; gap:10px; align-items:center;">
+            <span style="font-size:0.8rem; color:var(--text-muted);">Step Menu Items:</span>
+            <!-- Dynamically populated page buttons -->
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <button class="btn-secondary" id="hudBackButton" style="padding:6px 12px; display:none;" onclick="goToPreviousStep()"><i class="fa-solid fa-arrow-left mr-1"></i> Back</button>
+            <button class="btn-primary" id="hudNextButton" style="width:auto; padding:6px 16px; background-color:var(--color-success);" onclick="finalizeCurrentStep()">Complete Step & Next</button>
+            <button class="btn-secondary" style="padding:6px 12px;" onclick="exitWorkflowHUD()"><i class="fa-solid fa-times"></i> Close Wizard</button>
+        </div>
+    </div>
+
+    <!-- Toast widgets -->
+    <div id="notificationToast" class="toast">
+        <i id="notificationIcon" class="fa-solid fa-circle-check text-success" style="font-size: 1.2rem"></i>
+        <div>
+            <h5 id="notificationTitle" style="font-weight:700; font-size:0.9rem">System Notice</h5>
+            <p id="notificationMsg" class="text-muted" style="font-size:0.8rem; margin-top:2px">Description details...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
