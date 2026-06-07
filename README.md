@@ -195,7 +195,7 @@ This prior art design is implemented as a live Proof-of-Concept within this proj
 ## 6. How to Deploy the Proof-of-Concept locally
 
 To run the PoC and review the implementation of this prior art design:
-1. Navigate to the code directory containing the frontend structure: `C:\Users\Dell\.gemini\antigravity\scratch\generic-erp-ui`.
+1. Navigate to the code directory containing the frontend structure: `C:\Users\Dell\your-directory-path'
 2. Launch a lightweight HTTP web server using `node` or similar:
    ```bash
    npx serve ./
